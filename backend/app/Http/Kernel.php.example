@@ -1,0 +1,17 @@
+<?php
+
+/*
+|--------------------------------------------------------------------------
+| Laravel 10 style app/Http/Kernel.php - middleware registration
+|--------------------------------------------------------------------------
+| ONLY needed if your project still uses app/Http/Kernel.php (Laravel 10).
+| Add the two entries below to the $routeMiddleware (or $middlewareAliases)
+| array of your existing Kernel.php. Do not replace the whole file - this
+| is just a reference snippet.
+*/
+
+protected $middlewareAliases = [
+    // ... existing aliases (auth, guest, etc.) ...
+    'role' => \App\Http\Middleware\EnsureRole::class,
+    'active' => \App\Http\Middleware\EnsureActiveUser::class,
+];
