@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
 import { debtService } from '@/services/debt.service'
+import { useDashboardStore } from '@/stores/dashboard'
 import type { DebtsResponse } from '@/types'
 import BaseBadge from '@/components/BaseBadge.vue'
 import BaseButton from '@/components/BaseButton.vue'
@@ -10,6 +11,7 @@ const data = ref<DebtsResponse | null>(null)
 const loading = ref(true)
 const error = ref('')
 const settling = ref<number | null>(null)
+const dashboard = useDashboardStore()
 
 function formatCurrency(value: number | string) {
   return `${Number(value).toFixed(2)} €`
@@ -38,6 +40,7 @@ async function settle(shareId: number) {
   try {
     await debtService.settle(shareId)
     await load()
+    await dashboard.refresh().catch(() => undefined)
   } finally {
     settling.value = null
   }

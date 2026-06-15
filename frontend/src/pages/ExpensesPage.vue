@@ -115,6 +115,7 @@ async function onFormSubmit(formData: FormData) {
     } else {
       await expenseStore.createExpense(formData)
     }
+    await expenseStore.fetchExpenses()
     formOpen.value = false
   } catch (err: any) {
     const errors = err.response?.data?.errors
@@ -137,6 +138,7 @@ async function onConfirmDelete() {
   if (expenseToDelete.value === null) return
   await expenseStore.deleteExpense(expenseToDelete.value)
   expenseToDelete.value = null
+  await expenseStore.fetchExpenses()
 }
 
 function viewDetails(id: number) {

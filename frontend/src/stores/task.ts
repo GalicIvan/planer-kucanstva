@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
 import { taskService, type TaskFilters, type TaskPayload } from '@/services/task.service'
+import { useDashboardStore } from './dashboard'
 import type { Task, TaskStatus } from '@/types'
 
 interface TaskState {
@@ -32,6 +33,7 @@ export const useTaskStore = defineStore('task', {
     async createTask(payload: TaskPayload) {
       const { data } = await taskService.create(payload)
       this.tasks.unshift(data)
+      await useDashboardStore().refresh().catch(() => undefined)
       return data
     },
 
@@ -39,6 +41,7 @@ export const useTaskStore = defineStore('task', {
       const { data } = await taskService.update(id, payload)
       const idx = this.tasks.findIndex((t) => t.id === id)
       if (idx !== -1) this.tasks[idx] = data
+      await useDashboardStore().refresh().catch(() => undefined)
       return data
     },
 
@@ -46,12 +49,14 @@ export const useTaskStore = defineStore('task', {
       const { data } = await taskService.updateStatus(id, status)
       const idx = this.tasks.findIndex((t) => t.id === id)
       if (idx !== -1) this.tasks[idx] = data
+      await useDashboardStore().refresh().catch(() => undefined)
       return data
     },
 
     async deleteTask(id: number) {
       await taskService.remove(id)
       this.tasks = this.tasks.filter((t) => t.id !== id)
+      await useDashboardStore().refresh().catch(() => undefined)
     },
   },
 })

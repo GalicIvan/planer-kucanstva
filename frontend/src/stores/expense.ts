@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
 import { expenseService, type ExpenseFilters } from '@/services/expense.service'
+import { useDashboardStore } from './dashboard'
 import type { Expense } from '@/types'
 
 interface ExpenseState {
@@ -44,6 +45,7 @@ export const useExpenseStore = defineStore('expense', {
     async createExpense(payload: FormData) {
       const { data } = await expenseService.create(payload)
       this.expenses.unshift(data)
+      await useDashboardStore().refresh().catch(() => undefined)
       return data
     },
 
@@ -51,12 +53,14 @@ export const useExpenseStore = defineStore('expense', {
       const { data } = await expenseService.update(id, payload)
       const idx = this.expenses.findIndex((e) => e.id === id)
       if (idx !== -1) this.expenses[idx] = data
+      await useDashboardStore().refresh().catch(() => undefined)
       return data
     },
 
     async deleteExpense(id: number) {
       await expenseService.remove(id)
       this.expenses = this.expenses.filter((e) => e.id !== id)
+      await useDashboardStore().refresh().catch(() => undefined)
     },
   },
 })

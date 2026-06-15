@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, onMounted, onBeforeUnmount, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
 import BaseBadge from './BaseBadge.vue'
@@ -23,6 +23,22 @@ const roleLabel = computed(() => {
   }
 })
 
+const isMobile = ref(false)
+let mediaQuery: MediaQueryList | null = null
+const updateMobile = () => {
+  isMobile.value = !!mediaQuery?.matches
+}
+
+onMounted(() => {
+  mediaQuery = window.matchMedia('(max-width: 767px)')
+  updateMobile()
+  mediaQuery.addEventListener('change', updateMobile)
+})
+
+onBeforeUnmount(() => {
+  mediaQuery?.removeEventListener('change', updateMobile)
+})
+
 async function logout() {
   await auth.logout()
   router.push('/login')
@@ -34,7 +50,8 @@ async function logout() {
     <div class="flex items-center justify-between gap-3 px-4 md:px-6 py-3">
       <div class="flex items-center gap-3">
         <button
-          class="md:hidden btn btn-ghost px-2"
+          v-if="isMobile"
+          class="btn btn-ghost px-2"
           aria-label="Otvori izbornik"
           @click="emit('toggle-sidebar')"
         >

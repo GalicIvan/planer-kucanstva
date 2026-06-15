@@ -39,6 +39,7 @@ async function onFormSubmit(payload: ShoppingItemPayload) {
     } else {
       await shopping.createItem(payload)
     }
+    await shopping.fetchItems()
     formOpen.value = false
   } catch (err: any) {
     const errors = err.response?.data?.errors
@@ -50,6 +51,7 @@ async function onFormSubmit(payload: ShoppingItemPayload) {
 
 async function togglePurchased(item: ShoppingItem) {
   await shopping.markPurchased(item.id, !item.is_purchased)
+  await shopping.fetchItems()
 }
 
 // Delete
@@ -65,6 +67,7 @@ async function onConfirmDelete() {
   if (itemToDelete.value === null) return
   await shopping.deleteItem(itemToDelete.value)
   itemToDelete.value = null
+  await shopping.fetchItems()
 }
 
 onMounted(() => shopping.fetchItems())

@@ -23,6 +23,9 @@ async function onSubmit() {
 
 <template>
   <div>
+    <div class="mb-4">
+      <RouterLink to="/" class="btn btn-secondary inline-flex">Home</RouterLink>
+    </div>
     <h2 class="text-lg font-semibold text-ink mb-1">Prijava</h2>
     <p class="text-sm text-muted mb-5">Prijavite se sa svojim podacima za pristup planeru.</p>
 

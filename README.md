@@ -89,7 +89,7 @@ composer require laravel/sanctum
 # 3. Podesi .env (kopiraj vrijednosti iz backend/.env.example)
 php artisan key:generate
 
-# 4. Stvori bazu (MySQL)
+# 4. Ručno stvori MySQL bazu planer_kucanstva
 #    CREATE DATABASE planer_kucanstva CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 # 5. Pokreni migracije i seedere
@@ -270,13 +270,29 @@ sjaja ili glassmorphism efekata) definiranu kao CSS varijable u
 - `--color-panel` `#42454b` - bočna traka, tamne kartice
 - `--color-ink` `#2f292b` - glavni tekst
 
-## Status projekta
+## Audit i status spremnosti
 
-Projekt je funkcionalno cjelovit: backend (modeli, migracije, seederi,
-kontroleri, rute, middleware za uloge) i frontend (sve navedene stranice,
-Pinia spremišta, API servisi, komponente) su implementirani prema
-specifikaciji. Frontend je uspješno testiran (`npm run build`).
+### Što je pronađeno
+- Backend je prvotno bio vezan uz SQLite kao zadanu runtime bazu.
+- Dio frontend stranica i storeova već je bio spojen na pravi API, ali je
+  trebalo provjeriti da se dashboard osvježava nakon CRUD promjena.
+- UI je već koristio flat paletu, ali je trebalo dotjerati navigaciju na
+  loginu i ukloniti desktop hamburger ponašanje iz glavne navigacije.
 
-Eventualni sljedeći koraci za produkciju: napisati automatizirane testove
-(PHPUnit / Vitest), dodati notifikacije u sučelje (model i ruta su
-pripremljeni), te postaviti CI/CD.
+### Što je popravljeno
+- Zadana backend baza prebačena je na MySQL.
+- `.env.example` je usklađen za lokalni MySQL razvoj.
+- Frontend storeovi za troškove, zadatke, dugove i shopping sada osvježavaju
+  stvarno stanje nakon create/update/delete akcija.
+- Dashboard se ponovno dohvaća nakon ključnih promjena kako bi brojke ostale
+  sinkronizirane s bazom.
+- Login stranica ima Home gumb koji vodi na landing stranicu.
+
+### Status spremnosti za obranu
+Aplikacija je spremna za demonstraciju ako su MySQL, backend i frontend
+pokrenuti prema setupu iznad. Testni korisnici i CRUD tokovi postoje, a
+podaci dolaze iz baze, ne iz mocka.
+
+### Napomena
+Za potpunu produkcijsku pripremu još vrijedi dodati automatizirane testove
+(PHPUnit / Vitest) ako ih želite kao dodatni dokaz stabilnosti.

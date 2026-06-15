@@ -79,6 +79,7 @@ async function onFormSubmit(payload: TaskPayload) {
     } else {
       await taskStore.createTask(payload)
     }
+    await taskStore.fetchTasks()
     formOpen.value = false
   } catch (err: any) {
     const errors = err.response?.data?.errors
@@ -91,6 +92,7 @@ async function onFormSubmit(payload: TaskPayload) {
 async function toggleStatus(task: { id: number; status: TaskStatus }) {
   const next: TaskStatus = task.status === 'done' ? 'pending' : 'done'
   await taskStore.markDone(task.id, next)
+  await taskStore.fetchTasks()
 }
 
 // Delete
@@ -106,6 +108,7 @@ async function onConfirmDelete() {
   if (taskToDelete.value === null) return
   await taskStore.deleteTask(taskToDelete.value)
   taskToDelete.value = null
+  await taskStore.fetchTasks()
 }
 
 onMounted(async () => {
