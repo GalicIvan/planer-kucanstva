@@ -20,6 +20,13 @@ use Illuminate\Support\Facades\Route;
 */
 
 // ---- Public routes ----
+Route::get('/', function () {
+    return response()->json([
+        'name' => 'Planer kucanstva API',
+        'status' => 'ok',
+    ]);
+});
+
 Route::post('/auth/register', [AuthController::class, 'register']);
 Route::post('/auth/login', [AuthController::class, 'login']);
 
