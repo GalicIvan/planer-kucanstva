@@ -43,7 +43,7 @@ zahtjeva s autentikacijom temeljenom na tokenima.
 ## Tehnologije
 
 **Backend**
-- PHP 8.2+, Laravel 11
+- PHP 8.2+, Laravel 12
 - MySQL (Eloquent ORM, migracije, seederi)
 - Laravel Sanctum (token autentikacija)
 - REST API, middleware za uloge (`role:`) i aktivne korisnike (`active`)

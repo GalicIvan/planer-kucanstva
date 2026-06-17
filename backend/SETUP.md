@@ -10,7 +10,7 @@ included here because this environment has no access to Packagist.
 Follow the steps below on your own machine (with internet access and
 Composer/PHP/MySQL installed) to get a working project.
 
-## 1. Create a fresh Laravel 11 project
+## 1. Create a fresh Laravel 12 project
 
 ```bash
 composer create-project laravel/laravel backend
