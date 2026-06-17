@@ -15,6 +15,7 @@ class DatabaseSeeder extends Seeder
             ExpenseSeeder::class,
             TaskSeeder::class,
             ShoppingItemSeeder::class,
+            ReceiptSeeder::class,
         ]);
     }
 }

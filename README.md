@@ -68,38 +68,23 @@ planer-kucanstva/
 
 ## Pokretanje backenda (Laravel)
 
-> Ovaj repozitorij sadrži **izvorni kod Laravel aplikacije** (modeli,
-> kontroleri, migracije, seederi, rute, middleware), ali ne i sam Laravel
-> framework (`vendor/`), jer se on instalira putem Composera. Detaljne
-> korake za spajanje ovog koda u svjež Laravel projekt pronađite u
-> [`backend/SETUP.md`](backend/SETUP.md).
-
-Sažetak koraka:
+Backend u ovom checkoutu je runnable Laravel API. Ako preuzimate samo izvorni
+kod bez instaliranih dependencyja, detaljan fallback postupak je u
+[`backend/SETUP.md`](backend/SETUP.md). Za normalno lokalno pokretanje
+koristite korake ispod.
 
 ```bash
-# 1. Stvori svježi Laravel 11 projekt i dodaj Sanctum
-composer create-project laravel/laravel backend
 cd backend
-composer require laravel/sanctum
-
-# 2. Kopiraj datoteke iz ovog backend/ foldera u novostvoreni projekt
-#    (modeli, kontroleri, middleware, rute, migracije, seederi, config/cors.php)
-#    - detaljna tablica preslikavanja u backend/SETUP.md
-
-# 3. Podesi .env (kopiraj vrijednosti iz backend/.env.example)
+composer install
+cp .env.example .env   # ako .env već ne postoji
 php artisan key:generate
 
-# 4. Ručno stvori MySQL bazu planer_kucanstva
-#    CREATE DATABASE planer_kucanstva CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+# Ručno stvori MySQL bazu prije migracija:
+# CREATE DATABASE planer_kucanstva CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
-# 5. Pokreni migracije i seedere
-php artisan migrate
-php artisan db:seed
-
-# 6. Omogući pristup uploadanim računima
+php artisan config:clear
+php artisan migrate:fresh --seed
 php artisan storage:link
-
-# 7. Pokreni API server
 php artisan serve
 ```
 
@@ -171,7 +156,7 @@ Nakon pokretanja `php artisan db:seed`, dostupni su sljedeći korisnici
 | `marko@planer.test` | `password` | user |
 
 Svi pripadaju demo kućanstvu **"Stan u Zagrebu"** koje sadrži primjer
-troškova, zadataka i popisa za kupnju.
+troškova, dugovanja, zadataka, popisa za kupnju i demo PDF račun.
 
 ---
 
@@ -282,11 +267,14 @@ sjaja ili glassmorphism efekata) definiranu kao CSS varijable u
 ### Što je popravljeno
 - Zadana backend baza prebačena je na MySQL.
 - `.env.example` je usklađen za lokalni MySQL razvoj.
+- Lokalni SQLite artefakti su uklonjeni iz runtime puta i ignorirani u Gitu.
 - Frontend storeovi za troškove, zadatke, dugove i shopping sada osvježavaju
   stvarno stanje nakon create/update/delete akcija.
 - Dashboard se ponovno dohvaća nakon ključnih promjena kako bi brojke ostale
   sinkronizirane s bazom.
 - Login stranica ima Home gumb koji vodi na landing stranicu.
+- Seeder sada puni testne korisnike, kućanstvo, članove, troškove, udjele,
+  zadatke, shopping artikle i primjer PDF računa.
 
 ### Status spremnosti za obranu
 Aplikacija je spremna za demonstraciju ako su MySQL, backend i frontend

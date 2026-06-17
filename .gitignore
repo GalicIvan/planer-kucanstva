@@ -19,6 +19,8 @@ backend/storage/logs/*
 backend/bootstrap/cache/*
 backend/public/storage
 backend/public/hot
+backend/database/*.sqlite
+backend/database/*.sqlite-*
 backend/.phpunit.cache
 
 # --- Frontend (Vue/Vite) ---
