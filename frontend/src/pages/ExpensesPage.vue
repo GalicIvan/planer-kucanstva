@@ -32,7 +32,7 @@ const categoryLabels: Record<string, string> = Object.fromEntries(categories.map
 
 // Filters
 const search = ref('')
-const category = ref('')
+const selectedCategories = ref<string[]>([])
 const paidBy = ref('')
 const dateFrom = ref('')
 const dateTo = ref('')
@@ -61,7 +61,7 @@ const rows = computed(() =>
 function applyFilters() {
   expenseStore.fetchExpenses({
     search: search.value || undefined,
-    category: category.value || undefined,
+    category: selectedCategories.value.length ? selectedCategories.value : undefined,
     paid_by_user_id: paidBy.value || undefined,
     date_from: dateFrom.value || undefined,
     date_to: dateTo.value || undefined,
@@ -75,11 +75,17 @@ watch(search, () => {
   searchTimeout = setTimeout(applyFilters, 400)
 })
 
-watch([category, paidBy, dateFrom, dateTo], applyFilters)
+watch([selectedCategories, paidBy, dateFrom, dateTo], applyFilters, { deep: true })
+
+function toggleCategory(value: string) {
+  selectedCategories.value = selectedCategories.value.includes(value)
+    ? selectedCategories.value.filter((category) => category !== value)
+    : [...selectedCategories.value, value]
+}
 
 function resetFilters() {
   search.value = ''
-  category.value = ''
+  selectedCategories.value = []
   paidBy.value = ''
   dateFrom.value = ''
   dateTo.value = ''
@@ -163,7 +169,21 @@ onMounted(async () => {
 
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
         <BaseInput v-model="search" label="Pretraži po nazivu" placeholder="npr. Struja" />
-        <BaseSelect v-model="category" label="Kategorija" :options="categories" placeholder="Sve kategorije" />
+        <div class="sm:col-span-2 lg:col-span-2">
+          <span class="form-label">Kategorija</span>
+          <div class="flex flex-wrap gap-2">
+            <button
+              v-for="option in categories"
+              :key="option.value"
+              type="button"
+              class="category-filter"
+              :class="{ 'category-filter-active': selectedCategories.includes(option.value) }"
+              @click="toggleCategory(option.value)"
+            >
+              {{ option.label }}
+            </button>
+          </div>
+        </div>
         <BaseSelect v-model="paidBy" label="Platio" :options="memberOptions" placeholder="Svi članovi" />
         <BaseInput v-model="dateFrom" type="date" label="Od datuma" />
         <BaseInput v-model="dateTo" type="date" label="Do datuma" />

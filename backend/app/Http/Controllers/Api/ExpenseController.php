@@ -36,9 +36,14 @@ class ExpenseController extends Controller
             $query->where('title', 'like', "%{$search}%");
         }
 
-        // Filter 2: category
+        // Filter 2: one or more categories (e.g. utilities + groceries)
         if ($category = $request->query('category')) {
-            $query->where('category', $category);
+            $categories = is_array($category) ? $category : explode(',', $category);
+            $categories = array_values(array_filter($categories));
+
+            if (!empty($categories)) {
+                $query->whereIn('category', $categories);
+            }
         }
 
         // Filter 3: paid by user

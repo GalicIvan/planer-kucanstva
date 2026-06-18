@@ -3,7 +3,7 @@ import type { Expense, PaginatedResponse } from '@/types'
 
 export interface ExpenseFilters {
   search?: string
-  category?: string
+  category?: string | string[]
   paid_by_user_id?: number | string
   date_from?: string
   date_to?: string

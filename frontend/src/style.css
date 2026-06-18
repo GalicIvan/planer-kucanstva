@@ -127,6 +127,28 @@ body {
   border-color: var(--color-accent);
 }
 
+.category-filter {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.15rem;
+  padding: 0.4rem 0.7rem;
+  border: 1px solid var(--color-secondary);
+  border-radius: 0.4rem;
+  background-color: #ffffff;
+  color: var(--color-muted);
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.category-filter:hover,
+.category-filter-active {
+  border-color: var(--color-accent);
+  background-color: #f1e6df;
+  color: var(--color-accent);
+}
+
 .badge {
   display: inline-flex;
   align-items: center;
