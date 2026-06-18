@@ -58,6 +58,10 @@ const rows = computed(() =>
   }))
 )
 
+const displayedTotal = computed(() =>
+  expenseStore.expenses.reduce((sum, expense) => sum + Number(expense.amount), 0)
+)
+
 function applyFilters() {
   expenseStore.fetchExpenses({
     search: search.value || undefined,
@@ -194,6 +198,13 @@ onMounted(async () => {
     </div>
 
     <div class="app-card">
+      <div v-if="rows.length > 0" class="flex justify-end mb-3">
+        <div class="expense-total-summary">
+          <span>Zbroj prikazanih troškova</span>
+          <strong>{{ displayedTotal.toFixed(2) }} €</strong>
+        </div>
+      </div>
+
       <EmptyState
         v-if="!expenseStore.loading && rows.length === 0"
         title="Nema troškova za odabrane filtre"

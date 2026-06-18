@@ -149,6 +149,23 @@ body {
   color: var(--color-accent);
 }
 
+.expense-total-summary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.45rem 0.75rem;
+  border: 1px solid var(--color-secondary);
+  border-radius: 0.4rem;
+  background-color: #ffffff;
+  color: var(--color-muted);
+  font-size: 0.85rem;
+}
+
+.expense-total-summary strong {
+  color: var(--color-ink);
+  font-size: 0.95rem;
+}
+
 .badge {
   display: inline-flex;
   align-items: center;
